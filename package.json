@@ -1,6 +1,6 @@
 {
 	"name": "supports-terminal-graphics",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"description": "Detect which terminal graphics protocols are supported (Kitty, iTerm2, Sixel)",
 	"license": "MIT",
 	"repository": "sindresorhus/supports-terminal-graphics",
