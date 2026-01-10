@@ -49,6 +49,9 @@
 		"tty",
 		"console"
 	],
+	"dependencies": {
+		"terminal-query": "^0.1.0"
+	},
 	"devDependencies": {
 		"ava": "^6.4.1",
 		"typescript": "^5.9.3",
