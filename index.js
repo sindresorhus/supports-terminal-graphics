@@ -21,6 +21,10 @@ function deviceAttributes() {
 		return;
 	}
 
+	if (!response) {
+		return;
+	}
+
 	// https://github.com/hzeller/timg/blob/1a75454106e1545fe9aaf9ec3936378642ba6097/src/term-query.cc#L323-L343
 	// https://github.com/chjj/blessed/blob/eab243fc7ad27f1d2932db6134f7382825ee3488/lib/program.js#L1057-L1116
 	const match = response.match(deviceAttributesRegex);
