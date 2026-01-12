@@ -1,4 +1,5 @@
 import process from 'node:process';
+import {queryDeviceAttributesSync} from 'terminal-query';
 
 function parseVersion(versionString) {
 	const parts = (versionString || '').split('.').map(n => Number.parseInt(n, 10));
@@ -7,6 +8,32 @@ function parseVersion(versionString) {
 		minor: parts[1] || 0,
 		patch: parts[2] || 0,
 	};
+}
+
+const deviceAttributesRegex = /^\u001B\[\?(?<value>\d+(?:;\d+)*)?c/; // eslint-disable-line no-control-regex
+
+function deviceAttributes() {
+	let response;
+
+	try {
+		response = queryDeviceAttributesSync();
+	} catch {
+		return;
+	}
+
+	if (!response) {
+		return;
+	}
+
+	// https://github.com/hzeller/timg/blob/1a75454106e1545fe9aaf9ec3936378642ba6097/src/term-query.cc#L323-L343
+	// https://github.com/chjj/blessed/blob/eab243fc7ad27f1d2932db6134f7382825ee3488/lib/program.js#L1057-L1116
+	const match = response.match(deviceAttributesRegex);
+
+	if (!match || !match.groups?.value) {
+		return;
+	}
+
+	return new Set(match.groups.value.split(';'));
 }
 
 function versionSatisfies(version, minMajor, minMinor = 0, minPatch = 0) {
@@ -182,7 +209,7 @@ function supportsSixel(stream, env) {
 		return true;
 	}
 
-	return false;
+	return deviceAttributes()?.has('4') ?? false;
 }
 
 export function createSupportsTerminalGraphics(stream) {
