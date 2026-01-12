@@ -209,7 +209,7 @@ function supportsSixel(stream, env) {
 		return true;
 	}
 
-	return deviceAttributes()?.has('4');
+	return deviceAttributes()?.has('4') ?? false;
 }
 
 export function createSupportsTerminalGraphics(stream) {
